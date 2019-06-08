@@ -1,5 +1,5 @@
 # gaussian_eliminator
-I'm going to try to make a matrix Gaussian eliminator. It's probably going to be pretty bad, but here goes. 
+I'm going to try to make a matrix Gaussian eliminator. It's probably going to be pretty janky, but here goes. 
 
 ## Current issues
 1. If matrix doesn't reduce, errors all over the place
