@@ -1,6 +1,5 @@
-7
 matrix_height = 3
-matrix_width = 3
+matrix_width = 4
 
 def takeInput(): 
   
@@ -19,8 +18,15 @@ def takeInput():
 
     matrix.append(new_row_vector)
     
-  print(matrix)
+  print(matrix, "\n")
   return(matrix)
+
+
+def printMatrix(matrix):
+  print("[")
+  for row in matrix:
+    print(row)
+  print("]")
 
 
 #multiplies a row by a scalar
@@ -42,11 +48,55 @@ def addRows(row_vector_1, row_vector_2):
 
   return(output_row_vector)
 
+def swapRows(matrix, rowNumber1, rowNumber2):
+  row1 = matrix[rowNumber1]
+  row2 = matrix[rowNumber2]
+  
+  matrix.pop(rowNumber1)
+  matrix.insert(rowNumber1, row2)
+
+  matrix.pop(rowNumber2)
+  matrix.insert(rowNumber2, row1)
+
+  return matrix
+
+
+#Takes matrix, then tries to find pivot row 
+#swaps the pivot row into the working_column number-th row, then returns if it was successful.
+def findPivotRow(matrix, working_column_number):
+  
+  for possiblePivotRowNumber in range(working_column_number, matrix_height):
+    print("Testing row {}, column {}".format(possiblePivotRowNumber, working_column_number))
+    possiblePivotRow = matrix[possiblePivotRowNumber]
+
+    if possiblePivotRow[working_column_number] == 0:
+      continue
+    else:
+      swapRows(matrix, working_column_number, possiblePivotRowNumber)
+      pivot_found = True
+      return (matrix, pivot_found)
+
+  #this executes only if no pivots are found 
+  pivot_found = False
+  print("No pivot found in column {}".format(working_column_number))
+  return (matrix, pivot_found)
+
 
 def doGaussianElimination(matrix):
 
-  for working_column_number in range(0, matrix_width):
-    #for now, the pivot row will just be chosen to be the row with number equal to the working_column_number
+  #The min is because you can only have as many potential pivots as there are diagonal entries (which is equal to the min of matrix width and length)
+  for working_column_number in range(0, min(matrix_width, matrix_height)):
+    
+    #adjusts matrix until a possible pivot for this column is in the row with number equal to the working_column_number
+    find_pivot_row_results = findPivotRow(matrix, working_column_number)
+    matrix = find_pivot_row_results[0]
+    pivot_found = find_pivot_row_results[1]
+    #If a pivot is not found, skip this column.
+    if not pivot_found:
+      print("Continuing, because pivot was not found")
+      continue
+
+    #this is true because the findPivotRow step moves the pivot row into the correct row.
     pivot_row_number = working_column_number
 
     #sets up pivot_row
@@ -82,11 +132,10 @@ def doGaussianElimination(matrix):
                 [0, 0, -1]]
 """
 
-#print(doGaussianElimination(input_matrixtdoGaussianElimination ))
-#P#P phonesphones areare diumb
-#Pri
+"""
+input_matrix = [[0, 0, 1],
+                [1, 0, 0],
+                [0, 1, 0]]
+"""
 
-#printprint()
-#)
-
-print(doGaussianElimination(takeInput()))
+printMatrix(doGaussianElimination(takeInput()))
